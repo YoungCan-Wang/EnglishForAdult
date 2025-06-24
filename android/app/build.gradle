@@ -72,6 +72,9 @@ def enableProguardInReleaseBuilds = false
  */
 def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
 
+// Add extension property for React Native node_modules directory
+project.ext.REACT_NATIVE_NODE_MODULES_DIR = file("../../node_modules")
+
 android {
     ndkVersion rootProject.ext.ndkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
@@ -96,6 +99,13 @@ android {
     buildTypes {
         debug {
             signingConfig signingConfigs.debug
+            debuggable true
+            jniDebuggable true
+            renderscriptDebuggable true
+            // Disable symbol stripping for debug builds
+            packagingOptions {
+                doNotStrip "**/*.so"
+            }
         }
         release {
             // Caution! In production, you need to generate your own keystore file.
