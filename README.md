@@ -1,97 +1,190 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# EngLishForAdult - 成人英语学习应用
 
-# Getting Started
+一个专为成人设计的英语口语和听力学习React Native应用。
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+## 功能特色
 
-## Step 1: Start Metro
+### 🗣️ 口语练习
+- 发音练习和评估
+- 实时语音识别
+- 发音准确度分析
+- 重点词汇练习
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+### 👂 听力训练
+- 多难度听力材料
+- 互动式问答练习
+- 原文对照功能
+- 播放速度调节
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+### 📚 词汇学习
+- 分类词汇管理
+- 发音播放功能
+- 词汇详情查看
+- 学习工具集成
 
-```sh
-# Using npm
-npm start
+### 📊 学习进度
+- 详细学习统计
+- 技能等级系统
+- 成就徽章系统
+- 连续学习记录
 
-# OR using Yarn
-yarn start
+## 技术架构
+
+### 前端框架
+- **React Native** - 跨平台移动应用开发
+- **TypeScript** - 类型安全的JavaScript
+- **React Navigation** - 导航管理
+
+### UI组件
+- **react-native-vector-icons** - 图标库
+- **react-native-linear-gradient** - 渐变效果
+- **react-native-safe-area-context** - 安全区域处理
+
+### 数据存储
+- **AsyncStorage** - 本地数据持久化
+- **ProgressService** - 学习进度管理
+- **DataService** - 模拟数据服务
+
+### 音频处理
+- **AudioService** - 音频播放和录音
+- **语音识别** - 发音评估功能
+- **音频格式转换** - 多格式支持
+
+## 项目结构
+
+```
+src/
+├── components/          # 可复用组件
+├── navigation/          # 导航配置
+│   └── AppNavigator.tsx # 主导航器
+├── screens/            # 页面组件
+│   ├── HomeScreen.tsx           # 首页
+│   ├── SpeakingScreen.tsx       # 口语练习
+│   ├── ListeningScreen.tsx      # 听力练习
+│   ├── VocabularyScreen.tsx     # 词汇学习
+│   ├── ProfileScreen.tsx        # 个人中心
+│   ├── LessonDetailScreen.tsx   # 课程详情
+│   ├── PronunciationPracticeScreen.tsx  # 发音练习
+│   └── ListeningPracticeScreen.tsx      # 听力练习详情
+├── services/           # 业务服务
+│   ├── DataService.ts       # 数据服务
+│   ├── AudioService.ts      # 音频服务
+│   └── ProgressService.ts   # 进度服务
+├── types/              # 类型定义
+│   └── index.ts        # 核心类型
+├── utils/              # 工具函数
+└── data/               # 静态数据
+
+assets/
+├── audio/              # 音频文件
+└── images/             # 图片资源
 ```
 
-## Step 2: Build and run your app
+## 安装和运行
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+### 环境要求
+- Node.js >= 16
+- React Native CLI
+- Xcode (iOS开发)
+- Android Studio (Android开发)
 
-### Android
-
-```sh
-# Using npm
-npm run android
-
-# OR using Yarn
-yarn android
+### 安装依赖
+```bash
+cd EngLishForAdult
+npm install
 ```
 
-### iOS
+### iOS运行
+```bash
+# 安装iOS依赖
+npx pod-install
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+# 启动Metro服务器
+npx react-native start
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
+# 在新终端运行iOS应用
+npx react-native run-ios
 ```
 
-Then, and every time you update your native dependencies, run:
+### Android运行
+```bash
+# 启动Metro服务器
+npx react-native start
 
-```sh
-bundle exec pod install
+# 在新终端运行Android应用
+npx react-native run-android
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+## 核心功能模块
 
-```sh
-# Using npm
-npm run ios
+### 1. 导航系统
+- 底部标签导航（首页、口语、听力、词汇、我的）
+- 堆栈导航支持页面跳转
+- 类型安全的导航参数
 
-# OR using Yarn
-yarn ios
-```
+### 2. 学习进度管理
+- 用户等级和积分系统
+- 技能经验值和升级机制
+- 连续学习天数统计
+- 成就解锁系统
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+### 3. 音频处理
+- 音频播放和暂停控制
+- 录音功能和文件管理
+- 语音识别和发音评估
+- 播放速度调节
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+### 4. 数据持久化
+- 学习进度本地存储
+- 用户设置保存
+- 离线数据支持
 
-## Step 3: Modify your app
+## 开发计划
 
-Now that you have successfully run the app, let's make changes!
+### 已完成 ✅
+- [x] 项目初始化和依赖配置
+- [x] 核心类型定义
+- [x] 导航系统搭建
+- [x] 主要页面组件开发
+- [x] 音频服务架构
+- [x] 进度管理系统
+- [x] UI界面设计
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+### 待开发 🚧
+- [ ] 真实音频播放集成
+- [ ] 语音识别API对接
+- [ ] 发音评估算法
+- [ ] 课程内容数据
+- [ ] 用户认证系统
+- [ ] 云端数据同步
+- [ ] 推送通知
+- [ ] 应用图标和启动页
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+### 优化计划 🔄
+- [ ] 性能优化
+- [ ] 错误处理完善
+- [ ] 单元测试覆盖
+- [ ] 国际化支持
+- [ ] 无障碍功能
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+## 贡献指南
 
-## Congratulations! :tada:
+1. Fork 项目
+2. 创建功能分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 打开 Pull Request
 
-You've successfully run and modified your React Native App. :partying_face:
+## 许可证
 
-### Now what?
+本项目采用 MIT 许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+## 联系方式
 
-# Troubleshooting
+如有问题或建议，请通过以下方式联系：
+- 创建 Issue
+- 发送邮件
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+---
 
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+**注意**: 这是一个学习项目，部分功能使用模拟数据。在生产环境中使用前，请确保集成真实的API和服务。
