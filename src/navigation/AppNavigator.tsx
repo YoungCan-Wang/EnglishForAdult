@@ -76,7 +76,7 @@ function TabNavigator() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ focused, color, size }) => {
+        tabBarIcon: ({ focused: _focused, color, size }) => {
           let iconName: string;
 
           switch (route.name) {

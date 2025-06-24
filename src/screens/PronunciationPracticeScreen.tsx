@@ -58,7 +58,7 @@ const PronunciationPracticeScreen: React.FC<Props> = ({ navigation, route }) => 
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, [isRecording]);
+  }, [isRecording, pulseAnim]);
 
   const startRecording = () => {
     setIsRecording(true);

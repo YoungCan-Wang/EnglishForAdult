@@ -6,7 +6,6 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
-  Alert,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -21,7 +20,7 @@ interface Props {
 
 const HomeScreen: React.FC<Props> = ({ navigation }) => {
   const [lessons, setLessons] = useState<Lesson[]>([]);
-  const [userLevel, setUserLevel] = useState<string>('beginner');
+  const [userLevel, _setUserLevel] = useState<string>('beginner');
   const [streak, setStreak] = useState<number>(0);
   const [totalScore, setTotalScore] = useState<number>(0);
 
@@ -35,8 +34,8 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
       const progressData = await getUserProgress();
       
       setLessons(lessonsData);
-      setStreak(progressData.streak || 0);
-      setTotalScore(progressData.totalScore || 0);
+      setStreak(progressData.streakDays || 0);
+      setTotalScore(progressData.totalPoints || 0);
     } catch (error) {
       console.error('加载数据失败:', error);
     }

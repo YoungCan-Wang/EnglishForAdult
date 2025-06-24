@@ -210,7 +210,7 @@ class AudioService {
   // 发音评估相关方法
   public async evaluatePronunciation(
     targetText: string,
-    audioPath: string
+    _audioPath: string
   ): Promise<{
     score: number;
     feedback: string;
@@ -281,7 +281,7 @@ class AudioService {
     }
   }
 
-  public async getAudioDuration(filePath: string): Promise<number> {
+  public async getAudioDuration(_filePath: string): Promise<number> {
     try {
       // 模拟获取音频时长
       return Math.floor(Math.random() * 60) + 10; // 10-70秒

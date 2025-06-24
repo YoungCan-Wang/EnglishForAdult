@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Dimensions,
   Alert,
-  Image,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -19,7 +18,7 @@ interface Props {
   navigation: any;
 }
 
-const ProfileScreen: React.FC<Props> = ({ navigation }) => {
+const ProfileScreen: React.FC<Props> = ({ navigation: _navigation }) => {
   const [userProgress, setUserProgress] = useState<any>(null);
   const [learningStats, setLearningStats] = useState<any>(null);
 

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { ListeningExercise, ListeningQuestion } from '../types';
+import { ListeningExercise } from '../types';
 
 interface Props {
   navigation: any;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -20,7 +20,7 @@ interface Props {
   navigation: any;
 }
 
-const VocabularyScreen: React.FC<Props> = ({ navigation }) => {
+const VocabularyScreen: React.FC<Props> = ({ navigation: _navigation }) => {
   const [words, setWords] = useState<VocabularyWord[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [searchText, setSearchText] = useState<string>('');
@@ -28,22 +28,22 @@ const VocabularyScreen: React.FC<Props> = ({ navigation }) => {
 
   useEffect(() => {
     loadVocabulary();
-  }, [selectedCategory]);
+  }, []); // 移除对 loadVocabulary 的依赖，因为它会导致循环依赖
 
   useEffect(() => {
     filterWords();
   }, [words, searchText]);
 
-  const loadVocabulary = async () => {
+  const loadVocabulary = useCallback(async () => {
     try {
       const data = await getVocabulary(selectedCategory === 'all' ? undefined : selectedCategory);
       setWords(data);
     } catch (error) {
       console.error('加载词汇失败:', error);
     }
-  };
+  }, [selectedCategory]);
 
-  const filterWords = () => {
+  const filterWords = useCallback(() => {
     if (!searchText) {
       setFilteredWords(words);
       return;
@@ -54,7 +54,7 @@ const VocabularyScreen: React.FC<Props> = ({ navigation }) => {
       word.meaning.toLowerCase().includes(searchText.toLowerCase())
     );
     setFilteredWords(filtered);
-  };
+  }, [words, searchText]);
 
   const renderCategorySelector = () => {
     const categories = [

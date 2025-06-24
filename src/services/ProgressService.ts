@@ -1,20 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { UserProgress, Achievement, Lesson, Exercise } from '../types';
+import { UserProgress, LearningStats } from '../types';
 
-// 学习统计数据
-export interface LearningStats {
-  totalStudyTime: number; // 总学习时间（分钟）
-  wordsLearned: number; // 已学单词数
-  lessonsCompleted: number; // 完成课程数
-  speakingScore: number; // 口语平均分
-  listeningScore: number; // 听力平均分
-  vocabularyScore: number; // 词汇平均分
-  streakDays: number; // 连续学习天数
-  totalPoints: number; // 总积分
-  level: number; // 用户等级
-  weeklyGoal: number; // 周学习目标（分钟）
-  weeklyProgress: number; // 本周已学习时间（分钟）
-}
+// 移除重复的 LearningStats 接口定义（删除第4-16行）
 
 // 每日学习记录
 export interface DailyRecord {
@@ -135,7 +122,32 @@ class ProgressService {
         totalPoints: 0,
         level: 1,
         weeklyGoal: 300, // 默认周目标5小时
-        weeklyProgress: 0,
+        weeklyProgress: [], // 每周学习进度记录数组
+        currentStreak: 0,
+        longestStreak: 0,
+        averageScore: 0,
+        vocabularyCount: 0,
+        skillProgress: {
+          speaking: {
+            level: 1,
+            experience: 0,
+            maxExperience: 100,
+            recentScores: []
+          },
+          listening: {
+            level: 1,
+            experience: 0,
+            maxExperience: 100,
+            recentScores: []
+          },
+          vocabulary: {
+            level: 1,
+            experience: 0,
+            maxExperience: 100,
+            recentScores: []
+          }
+        },
+        monthlyProgress: []
       };
       
       await this.saveLearningStats(defaultStats);
@@ -246,7 +258,7 @@ class ProgressService {
   }
 
   // 完成课程
-  public async completeLesson(lessonId: string, score: number): Promise<void> {
+  public async completeLesson(lessonId: string, _score: number): Promise<void> {
     try {
       const [progress, stats] = await Promise.all([
         this.getUserProgress(),
@@ -474,7 +486,7 @@ class ProgressService {
   }
 
   // 检查成就
-  private async checkAchievements(stats: LearningStats, progress: UserProgress): Promise<void> {
+  private async checkAchievements(stats: LearningStats, _progress: UserProgress): Promise<void> {
     // 学习时长成就
     if (stats.totalStudyTime >= 60) await this.unlockAchievement('study_1_hour');
     if (stats.totalStudyTime >= 600) await this.unlockAchievement('study_10_hours');

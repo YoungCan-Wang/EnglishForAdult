@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -23,18 +23,18 @@ const ListeningScreen: React.FC<Props> = ({ navigation }) => {
   const [exercises, setExercises] = useState<ListeningExercise[]>([]);
   const [selectedDifficulty, setSelectedDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy');
 
-  useEffect(() => {
-    loadExercises();
-  }, [selectedDifficulty]);
-
-  const loadExercises = async () => {
+  const loadExercises = useCallback(async () => {
     try {
       const data = await getListeningExercises(selectedDifficulty);
       setExercises(data);
     } catch (error) {
       console.error('加载听力练习失败:', error);
     }
-  };
+  }, [selectedDifficulty]);
+
+  useEffect(() => {
+    loadExercises();
+  }, [loadExercises]);
 
   const renderDifficultySelector = () => {
     const difficulties = [

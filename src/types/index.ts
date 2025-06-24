@@ -37,6 +37,21 @@ export interface Exercise {
 }
 
 export interface UserProgress {
+  userId: string;
+  level: number;
+  totalPoints: number;
+  streakDays: number;
+  completedLessons: string[];
+  skillLevels: {
+    speaking: number;
+    listening: number;
+    vocabulary: number;
+  };
+  achievements: string[];
+  lastActiveDate: string;
+}
+
+export interface LessonProgress {
   lessonId: string;
   score: number;
   completedAt: Date;
@@ -65,6 +80,7 @@ export interface SpeakingExercise {
 
 export interface ListeningExercise {
   id: string;
+  title: string;
   audioUrl: string;
   transcript: string;
   questions: ListeningQuestion[];
@@ -84,6 +100,46 @@ export interface Achievement {
   description: string;
   icon: string;
   unlockedAt?: Date;
+}
+
+export interface LearningStats {
+  totalStudyTime: number;
+  lessonsCompleted: number;
+  currentStreak: number;
+  longestStreak: number;
+  averageScore: number;
+  streakDays: number;
+  vocabularyCount: number;
+  speakingScore: number;
+  listeningScore: number;
+  vocabularyScore: number;
+  // 添加缺少的属性
+  wordsLearned: number;
+  totalPoints: number;
+  level: number;
+  weeklyGoal: number;
+  skillProgress: {
+    speaking: {
+      level: number;
+      experience: number;
+      maxExperience: number;
+      recentScores: number[];
+    };
+    listening: {
+      level: number;
+      experience: number;
+      maxExperience: number;
+      recentScores: number[];
+    };
+    vocabulary: {
+      level: number;
+      experience: number;
+      maxExperience: number;
+      recentScores: number[];
+    };
+  };
+  weeklyProgress: number[];
+  monthlyProgress: number[];
 }
 
 export interface AppState {

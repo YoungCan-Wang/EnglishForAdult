@@ -1,3 +1,4 @@
+// 数据服务 - 处理应用数据的获取和存储
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Lesson, SpeakingExercise, ListeningExercise, VocabularyWord, UserProgress } from '../types';
 
@@ -127,6 +128,7 @@ const mockSpeakingExercises: SpeakingExercise[] = [
 const mockListeningExercises: ListeningExercise[] = [
   {
     id: 'ls1',
+    title: '基础对话技能',
     audioUrl: 'https://example.com/listening1.mp3',
     transcript: 'Welcome to our English learning program. Today we will focus on basic conversation skills.',
     questions: [
@@ -141,6 +143,7 @@ const mockListeningExercises: ListeningExercise[] = [
   },
   {
     id: 'ls2',
+    title: '天气预报',
     audioUrl: 'https://example.com/listening2.mp3',
     transcript: 'The weather forecast predicts heavy rain this afternoon with temperatures dropping to fifteen degrees.',
     questions: [
@@ -220,7 +223,7 @@ export const getVocabulary = async (category?: string): Promise<VocabularyWord[]
   return mockVocabulary;
 };
 
-export const getUserProgress = async (): Promise<any> => {
+export const getUserProgress = async (): Promise<UserProgress> => {
   try {
     const progress = await AsyncStorage.getItem('userProgress');
     if (progress) {
@@ -228,23 +231,31 @@ export const getUserProgress = async (): Promise<any> => {
     }
     // 返回默认进度
     return {
-      streak: 5,
-      totalScore: 1250,
-      completedLessons: 8,
-      level: 'intermediate',
+      userId: 'default',
+      level: 1,
+      totalPoints: 1250,
+      streakDays: 5,
+      completedLessons: ['lesson1', 'lesson2'],
+      skillLevels: { speaking: 1, listening: 1, vocabulary: 1 },
+      achievements: [],
+      lastActiveDate: new Date().toISOString(),
     };
   } catch (error) {
     console.error('获取用户进度失败:', error);
     return {
-      streak: 0,
-      totalScore: 0,
-      completedLessons: 0,
-      level: 'beginner',
+      userId: 'default',
+      level: 1,
+      totalPoints: 0,
+      streakDays: 0,
+      completedLessons: [],
+      skillLevels: { speaking: 0, listening: 0, vocabulary: 0 },
+      achievements: [],
+      lastActiveDate: new Date().toISOString(),
     };
   }
 };
 
-export const saveUserProgress = async (progress: any): Promise<void> => {
+export const saveUserProgress = async (progress: UserProgress): Promise<void> => {
   try {
     await AsyncStorage.setItem('userProgress', JSON.stringify(progress));
   } catch (error) {
@@ -262,8 +273,9 @@ export const markLessonCompleted = async (lessonId: string, score: number): Prom
     const progress = await getUserProgress();
     const newProgress = {
       ...progress,
-      totalScore: progress.totalScore + score,
-      completedLessons: progress.completedLessons + 1,
+      totalPoints: progress.totalPoints + score,
+      completedLessons: [...progress.completedLessons, lessonId],
+      lastActiveDate: new Date().toISOString(),
     };
     await saveUserProgress(newProgress);
     
