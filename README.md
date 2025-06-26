@@ -1,4 +1,4 @@
-# EngLishForAdult - 成人英语学习应用
+# EnglishForAdult - 成人英语学习应用
 
 一个专为成人设计的英语口语和听力学习React Native应用。
 
@@ -90,7 +90,7 @@ assets/
 
 ### 安装依赖
 ```bash
-cd EngLishForAdult
+cd EnglishForAdult
 npm install
 ```
 

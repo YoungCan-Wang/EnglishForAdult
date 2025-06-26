@@ -208,7 +208,7 @@ const ProfileScreen: React.FC<Props> = ({ navigation: _navigation }) => {
         title: '关于应用',
         subtitle: '版本信息和开发团队',
         icon: 'info',
-        action: () => Alert.alert('关于应用', 'EngLishForAdult v1.0.0\n\n专为成人英语学习设计的应用'),
+        action: () => Alert.alert('关于应用', 'EnglishForAdult v1.0.0\n\n专为成人英语学习设计的应用'),
       },
     ];
 

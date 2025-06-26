@@ -1,5 +1,5 @@
 /**
- * EngLishForAdult - English Learning App for Adults
+ * EnglishForAdult - English Learning App for Adults
  * @format
  */
 
