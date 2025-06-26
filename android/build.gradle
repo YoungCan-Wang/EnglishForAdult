@@ -3,9 +3,9 @@ buildscript {
         buildToolsVersion = "35.0.0"
         minSdkVersion = 24
         compileSdkVersion = 35
-        targetSdkVersion = 35
+        targetSdkVersion = 30
         ndkVersion = "27.1.12297006"
-        kotlinVersion = "2.1.20"
+        kotlinVersion = "1.9.10"
     }
     repositories {
         google()
@@ -23,9 +23,9 @@ apply plugin: "com.facebook.react.rootproject"
 // Add project-level properties for third-party libraries
 project.ext.compileSdk = 35
 project.ext.buildToolsVersion = "35.0.0"
-project.ext.targetSdkVersion = 35
+project.ext.targetSdkVersion = 30
 
 // Additional properties for compatibility
 compileSdk = 35
 buildToolsVersion = "35.0.0"
-targetSdkVersion = 35
+targetSdkVersion = 30

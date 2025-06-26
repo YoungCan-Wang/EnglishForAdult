@@ -73,7 +73,7 @@ def enableProguardInReleaseBuilds = false
 def jscFlavor = 'io.github.react-native-community:jsc-android:2026004.+'
 
 // Add extension property for React Native node_modules directory
-project.ext.REACT_NATIVE_NODE_MODULES_DIR = file("../../node_modules")
+project.ext.REACT_NATIVE_NODE_MODULES_DIR = file("../../node_modules/react-native")
 
 android {
     ndkVersion rootProject.ext.ndkVersion
@@ -130,7 +130,19 @@ dependencies {
 
 configurations.all {
     resolutionStrategy {
-        force 'androidx.core:core:1.13.1'
+        force 'androidx.core:core:1.12.0'
+        force 'androidx.core:core-ktx:1.12.0'
         force 'androidx.versionedparcelable:versionedparcelable:1.1.1'
+
+        eachDependency { details ->
+            if (details.requested.group == 'androidx.core' && details.requested.name == 'core-ktx') {
+                details.useVersion '1.12.0'
+                details.because 'Force androidx.core:core-ktx to 1.12.0 for API 34 compatibility'
+            }
+            if (details.requested.group == 'androidx.core' && details.requested.name == 'core') {
+                details.useVersion '1.12.0'
+                details.because 'Force androidx.core:core to 1.12.0 for API 34 compatibility'
+            }
+        }
     }
 }
