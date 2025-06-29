@@ -1,0 +1,165 @@
+// Smart Build Script for React Native Android
+// 目标：让 Android 开发者能够更直接地构建项目
+
+apply plugin: 'base'
+
+// 智能依赖检查和安装
+task smartSetup {
+    group = 'react-native'
+    description = '智能设置 React Native 项目依赖'
+    
+    doLast {
+        println "🚀 Smart React Native Setup Starting..."
+        
+        // 1. 检查 Node.js 环境
+        try {
+            exec {
+                commandLine "node", "--version"
+                standardOutput = new ByteArrayOutputStream()
+            }
+            println "✅ Node.js 环境正常"
+        } catch (Exception e) {
+            throw new GradleException("❌ 需要安装 Node.js: https://nodejs.org/")
+        }
+        
+        // 2. 检查并安装 npm 依赖
+        def packageJson = file("../package.json")
+        def nodeModules = file("../node_modules")
+        
+        if (!packageJson.exists()) {
+            throw new GradleException("❌ 找不到 package.json 文件")
+        }
+        
+        if (!nodeModules.exists() || nodeModules.listFiles().length == 0) {
+            println "📦 自动安装 npm 依赖..."
+            exec {
+                workingDir file("..")
+                commandLine "npm", "install"
+            }
+        }
+        
+        // 3. 验证关键 React Native 依赖
+        def criticalDeps = [
+            "react-native": "React Native 核心",
+            "react-native-gesture-handler": "手势处理",
+            "react-native-screens": "屏幕导航",
+            "@react-navigation/native": "导航核心"
+        ]
+        
+        criticalDeps.each { dep, desc ->
+            def depPath = file("../node_modules/${dep}")
+            if (depPath.exists()) {
+                println "✅ ${desc} (${dep})"
+            } else {
+                println "⚠️  缺少依赖: ${desc} (${dep})"
+            }
+        }
+        
+        // 4. 自动修复常见问题（类似你的脚本）
+        fixReactNativeLinks()
+        
+        println "🎉 Smart Setup 完成！现在可以运行 './gradlew assembleDebug'"
+    }
+}
+
+// 自动修复 React Native 链接问题
+def fixReactNativeLinks() {
+    println "🔧 修复 React Native 依赖链接..."
+    
+    // 为 react-native-gesture-handler 创建链接
+    def gestureHandlerDir = file("../node_modules/react-native-gesture-handler")
+    if (gestureHandlerDir.exists()) {
+        def gestureNodeModules = file("../node_modules/react-native-gesture-handler/node_modules")
+        gestureNodeModules.mkdirs()
+        
+        def reactAndroidLink = file("../node_modules/react-native-gesture-handler/node_modules/ReactAndroid")
+        def reactAndroidSource = file("../node_modules/react-native/ReactAndroid")
+        
+        if (reactAndroidSource.exists() && !reactAndroidLink.exists()) {
+            // 创建符号链接或复制
+            try {
+                exec {
+                    commandLine "ln", "-sf", reactAndroidSource.absolutePath, reactAndroidLink.absolutePath
+                }
+                println "✅ react-native-gesture-handler 链接已修复"
+            } catch (Exception e) {
+                println "⚠️  无法创建符号链接，尝试其他方法"
+            }
+        }
+    }
+}
+
+// 智能构建任务
+task smartBuild {
+    group = 'react-native'
+    description = '智能构建 React Native Android 应用'
+    dependsOn smartSetup
+    
+    doLast {
+        println "🏗️  开始智能构建..."
+        exec {
+            commandLine "./gradlew", "assembleDebug"
+        }
+    }
+}
+
+// 清理任务
+task smartClean {
+    group = 'react-native'
+    description = '智能清理项目'
+    
+    doLast {
+        println "🧹 清理项目..."
+        
+        // 清理 Gradle
+        exec {
+            commandLine "./gradlew", "clean"
+        }
+        
+        // 可选：清理 node_modules
+        println "是否要清理 node_modules? (这将需要重新 npm install)"
+        // 这里可以添加交互式选择
+    }
+}
+
+// 项目状态检查
+task projectStatus {
+    group = 'react-native'
+    description = '检查项目状态'
+    
+    doLast {
+        println "📊 React Native 项目状态检查"
+        println "================================"
+        
+        // 检查 package.json
+        def packageJson = file("../package.json")
+        if (packageJson.exists()) {
+            println "✅ package.json 存在"
+        } else {
+            println "❌ package.json 不存在"
+        }
+        
+        // 检查 node_modules
+        def nodeModules = file("../node_modules")
+        if (nodeModules.exists()) {
+            def depCount = nodeModules.listFiles()?.length ?: 0
+            println "✅ node_modules 存在 (${depCount} 个依赖)"
+        } else {
+            println "❌ node_modules 不存在"
+        }
+        
+        // 检查 Android 配置
+        def buildGradle = file("app/build.gradle")
+        if (buildGradle.exists()) {
+            println "✅ Android 构建配置存在"
+        } else {
+            println "❌ Android 构建配置不存在"
+        }
+        
+        println "================================"
+        println "💡 建议的构建流程："
+        println "1. ./gradlew smartSetup    # 智能设置"
+        println "2. ./gradlew smartBuild    # 智能构建"
+        println "或者直接: ./gradlew assembleDebug"
+    }
+}

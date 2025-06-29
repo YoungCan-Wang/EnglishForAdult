@@ -81,65 +81,12 @@ task setupReactNativeDeps {
     }
 }
 
-// 智能构建任务
-task smartBuild {
-    group = 'react-native'
-    description = '智能构建 React Native Android 应用'
-    dependsOn setupReactNativeDeps
-
-    doLast {
-        println "🏗️  开始智能构建..."
-        exec {
-            commandLine "./gradlew", "assembleDebug"
-        }
-    }
-}
-
-// 项目状态检查
-task projectStatus {
-    group = 'react-native'
-    description = '检查项目状态'
-
-    doLast {
-        println "📊 React Native 项目状态检查"
-        println "================================"
-
-        // 检查 package.json
-        def packageJson = file("../package.json")
-        if (packageJson.exists()) {
-            println "✅ package.json 存在"
-        } else {
-            println "❌ package.json 不存在"
-        }
-
-        // 检查 node_modules
-        def nodeModules = file("../node_modules")
-        if (nodeModules.exists()) {
-            def depCount = nodeModules.listFiles()?.length ?: 0
-            println "✅ node_modules 存在 (${depCount} 个依赖)"
-        } else {
-            println "❌ node_modules 不存在"
-        }
-
-        // 检查 Android 配置
-        def buildGradle = file("app/build.gradle")
-        if (buildGradle.exists()) {
-            println "✅ Android 构建配置存在"
-        } else {
-            println "❌ Android 构建配置不存在"
-        }
-
-        println "================================"
-        println "💡 建议的构建流程："
-        println "1. ./gradlew setupReactNativeDeps  # 设置依赖"
-        println "2. ./gradlew smartBuild            # 智能构建"
-        println "或者直接: ./gradlew assembleDebug"
-    }
-}
-
 // 让所有构建任务依赖于依赖检查
 tasks.whenTaskAdded { task ->
     if (task.name == 'preBuild') {
         task.dependsOn setupReactNativeDeps
     }
 }
+
+// 引入智能构建脚本
+apply from: 'smart_build.gradle'
