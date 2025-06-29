@@ -9,7 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import CustomIcon from '../components/CustomIcon';
 import { SpeakingExercise } from '../types';
 import { getSpeakingExercises } from '../services/DataService';
 
@@ -98,7 +98,7 @@ const SpeakingScreen: React.FC<Props> = ({ navigation }) => {
           end={{ x: 1, y: 1 }}
         >
           <View style={styles.exerciseHeader}>
-            <Icon name="mic" size={24} color="white" />
+            <CustomIcon name="mic" size={24} color="white" />
             <View style={styles.difficultyBadge}>
               <Text style={styles.difficultyBadgeText}>{exercise.difficulty}</Text>
             </View>
@@ -110,13 +110,13 @@ const SpeakingScreen: React.FC<Props> = ({ navigation }) => {
           
           <View style={styles.exerciseFooter}>
             <View style={styles.targetWords}>
-              <Icon name="target" size={16} color="rgba(255, 255, 255, 0.8)" />
+              <CustomIcon name="target" size={16} color="rgba(255, 255, 255, 0.8)" />
               <Text style={styles.targetWordsText}>
                 重点词汇: {exercise.targetWords.slice(0, 3).join(', ')}
                 {exercise.targetWords.length > 3 && '...'}
               </Text>
             </View>
-            <Icon name="play-arrow" size={24} color="white" />
+            <CustomIcon name="play-arrow" size={24} color="white" />
           </View>
         </LinearGradient>
       </TouchableOpacity>
@@ -165,7 +165,7 @@ const SpeakingScreen: React.FC<Props> = ({ navigation }) => {
               style={[styles.quickPracticeCard, { backgroundColor: option.color }]}
               onPress={option.action}
             >
-              <Icon name={option.icon} size={32} color="white" />
+              <CustomIcon name={option.icon as any} size={32} color="white" />
               <Text style={styles.quickPracticeTitle}>{option.title}</Text>
               <Text style={styles.quickPracticeSubtitle}>{option.subtitle}</Text>
             </TouchableOpacity>
@@ -186,7 +186,7 @@ const SpeakingScreen: React.FC<Props> = ({ navigation }) => {
       >
         <View style={styles.headerContent}>
           <View style={styles.headerLeft}>
-            <Icon name="mic" size={32} color="white" />
+            <CustomIcon name="mic" size={32} color="white" />
             <View style={styles.headerText}>
               <Text style={styles.headerTitle}>口语练习</Text>
               <Text style={styles.headerSubtitle}>提升你的英语口语能力</Text>
@@ -213,7 +213,7 @@ const SpeakingScreen: React.FC<Props> = ({ navigation }) => {
 
       {/* 底部提示 */}
       <View style={styles.tipCard}>
-        <Icon name="lightbulb-outline" size={24} color="#FFA726" />
+        <CustomIcon name="lightbulb-outline" size={24} color="#FFA726" />
         <View style={styles.tipContent}>
           <Text style={styles.tipTitle}>练习小贴士</Text>
           <Text style={styles.tipText}>

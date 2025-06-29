@@ -8,7 +8,7 @@ import {
   Animated,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import CustomIcon from '../components/CustomIcon';
 import { SpeakingExercise } from '../types';
 
 interface Props {
@@ -168,7 +168,7 @@ const PronunciationPracticeScreen: React.FC<Props> = ({ navigation, route }) => 
                 {word}
               </Text>
               {completedWords[index] && (
-                <Icon name="check" size={16} color="white" style={styles.checkIcon} />
+                <CustomIcon name="check" size={16} color="white" />
               )}
             </TouchableOpacity>
           ))}
@@ -199,7 +199,7 @@ const PronunciationPracticeScreen: React.FC<Props> = ({ navigation, route }) => 
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Icon name="arrow-back" size={24} color="white" />
+          <CustomIcon name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
         
         <Text style={styles.headerTitle}>发音练习</Text>
@@ -239,7 +239,7 @@ const PronunciationPracticeScreen: React.FC<Props> = ({ navigation, route }) => 
           onPress={playOriginalAudio}
           disabled={isPlaying}
         >
-          <Icon name={isPlaying ? "pause" : "play-arrow"} size={24} color="white" />
+          <CustomIcon name={isPlaying ? "pause" : "play-arrow"} size={24} color="white" />
           <Text style={styles.controlButtonText}>
             {isPlaying ? '播放中...' : '听原音'}
           </Text>
@@ -254,7 +254,7 @@ const PronunciationPracticeScreen: React.FC<Props> = ({ navigation, route }) => 
             ]}
             onPress={isRecording ? stopRecording : startRecording}
           >
-            <Icon name={isRecording ? "stop" : "mic"} size={32} color="white" />
+            <CustomIcon name={isRecording ? "stop" : "mic"} size={32} color="white" />
           </TouchableOpacity>
         </Animated.View>
 
@@ -269,7 +269,7 @@ const PronunciationPracticeScreen: React.FC<Props> = ({ navigation, route }) => 
 
       {/* 提示 */}
       <View style={styles.tipsContainer}>
-        <Icon name="lightbulb-outline" size={20} color="#FFA726" />
+        <CustomIcon name="lightbulb-outline" size={20} color="#FFA726" />
         <Text style={styles.tipsText}>
           点击"听原音"按钮听标准发音，然后点击录音按钮开始练习
         </Text>

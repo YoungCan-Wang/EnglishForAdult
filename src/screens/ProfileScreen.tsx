@@ -9,7 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import CustomIcon from '../components/CustomIcon';
 import { getUserProgress, getLearningStats } from '../services/DataService';
 
 const { width } = Dimensions.get('window');
@@ -47,7 +47,7 @@ const ProfileScreen: React.FC<Props> = ({ navigation: _navigation }) => {
       >
         <View style={styles.userHeader}>
           <View style={styles.avatarContainer}>
-            <Icon name="person" size={40} color="white" />
+            <CustomIcon name="person" size={40} color="white" />
           </View>
           <View style={styles.userInfo}>
             <Text style={styles.userName}>英语学习者</Text>
@@ -63,17 +63,17 @@ const ProfileScreen: React.FC<Props> = ({ navigation: _navigation }) => {
         
         <View style={styles.userStats}>
           <View style={styles.statItem}>
-            <Icon name="local-fire-department" size={24} color="#FFD700" />
+            <CustomIcon name="local-fire-department" size={24} color="#FFD700" />
             <Text style={styles.statNumber}>{userProgress?.streak || 0}</Text>
             <Text style={styles.statLabel}>连续天数</Text>
           </View>
           <View style={styles.statItem}>
-            <Icon name="star" size={24} color="#FFD700" />
+            <CustomIcon name="star" size={24} color="#FFD700" />
             <Text style={styles.statNumber}>{userProgress?.totalScore || 0}</Text>
             <Text style={styles.statLabel}>总积分</Text>
           </View>
           <View style={styles.statItem}>
-            <Icon name="school" size={24} color="#FFD700" />
+            <CustomIcon name="school" size={24} color="#FFD700" />
             <Text style={styles.statNumber}>{userProgress?.completedLessons || 0}</Text>
             <Text style={styles.statLabel}>已完成</Text>
           </View>
@@ -112,7 +112,7 @@ const ProfileScreen: React.FC<Props> = ({ navigation: _navigation }) => {
         <View style={styles.statsGrid}>
           {stats.map((stat, index) => (
             <View key={index} style={styles.statCard}>
-              <Icon name={stat.icon} size={32} color={stat.color} />
+              <CustomIcon name={stat.icon as any} size={32} color={stat.color} />
               <Text style={styles.statCardValue}>{stat.value}</Text>
               <Text style={styles.statCardTitle}>{stat.title}</Text>
             </View>
@@ -153,7 +153,7 @@ const ProfileScreen: React.FC<Props> = ({ navigation: _navigation }) => {
           <View key={index} style={styles.skillItem}>
             <View style={styles.skillHeader}>
               <View style={styles.skillInfo}>
-                <Icon name={skill.icon} size={24} color={skill.color} />
+                <CustomIcon name={skill.icon as any} size={24} color={skill.color} />
                 <Text style={styles.skillName}>{skill.name}</Text>
               </View>
               <Text style={styles.skillScore}>{skill.score}%</Text>
@@ -218,13 +218,13 @@ const ProfileScreen: React.FC<Props> = ({ navigation: _navigation }) => {
         {menuItems.map((item, index) => (
           <TouchableOpacity key={index} style={styles.menuItem} onPress={item.action}>
             <View style={styles.menuItemLeft}>
-              <Icon name={item.icon} size={24} color="#666" />
+              <CustomIcon name={item.icon as any} size={24} color="#666" />
               <View style={styles.menuItemText}>
                 <Text style={styles.menuItemTitle}>{item.title}</Text>
                 <Text style={styles.menuItemSubtitle}>{item.subtitle}</Text>
               </View>
             </View>
-            <Icon name="chevron-right" size={24} color="#CCC" />
+            <CustomIcon name="chevron-right" size={24} color="#CCC" />
           </TouchableOpacity>
         ))}
       </View>

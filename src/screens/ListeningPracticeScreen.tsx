@@ -9,7 +9,7 @@ import {
   Modal,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import CustomIcon from '../components/CustomIcon';
 import { ListeningExercise } from '../types';
 
 interface Props {
@@ -99,7 +99,7 @@ const ListeningPracticeScreen: React.FC<Props> = ({ navigation, route }) => {
             style={styles.transcriptButton}
             onPress={() => setShowTranscript(true)}
           >
-            <Icon name="subtitles" size={20} color="#007AFF" />
+            <CustomIcon name="subtitles" size={20} color="#007AFF" />
             <Text style={styles.transcriptButtonText}>查看原文</Text>
           </TouchableOpacity>
         </View>
@@ -141,10 +141,10 @@ const ListeningPracticeScreen: React.FC<Props> = ({ navigation, route }) => {
                     {option}
                   </Text>
                   {showCorrect && (
-                    <Icon name="check-circle" size={20} color="#4CAF50" />
+                    <CustomIcon name="check-circle" size={20} color="#4CAF50" />
                   )}
                   {showWrong && (
-                    <Icon name="cancel" size={20} color="#F44336" />
+                    <CustomIcon name="cancel" size={20} color="#F44336" />
                   )}
                 </View>
               </TouchableOpacity>
@@ -166,7 +166,7 @@ const ListeningPracticeScreen: React.FC<Props> = ({ navigation, route }) => {
           onPress={playAudio}
           disabled={isPlaying}
         >
-          <Icon name={isPlaying ? "pause" : "play-arrow"} size={32} color="white" />
+          <CustomIcon name={isPlaying ? "pause" : "play-arrow"} size={32} color="white" />
         </TouchableOpacity>
         
         <View style={styles.audioInfo}>
@@ -178,7 +178,7 @@ const ListeningPracticeScreen: React.FC<Props> = ({ navigation, route }) => {
           style={styles.speedButton}
           onPress={() => Alert.alert('播放速度', '功能开发中...')}
         >
-          <Icon name="speed" size={20} color="#666" />
+          <CustomIcon name="speed" size={20} color="#666" />
           <Text style={styles.speedButtonText}>1.0x</Text>
         </TouchableOpacity>
       </View>
@@ -196,7 +196,7 @@ const ListeningPracticeScreen: React.FC<Props> = ({ navigation, route }) => {
           onPress={previousQuestion}
           disabled={currentQuestionIndex === 0}
         >
-          <Icon name="arrow-back" size={20} color={currentQuestionIndex === 0 ? '#CCC' : '#007AFF'} />
+          <CustomIcon name="arrow-back" size={20} color={currentQuestionIndex === 0 ? '#CCC' : '#007AFF'} />
           <Text style={[
             styles.navButtonText,
             currentQuestionIndex === 0 && styles.disabledButtonText
@@ -219,7 +219,7 @@ const ListeningPracticeScreen: React.FC<Props> = ({ navigation, route }) => {
           ]}>
             {currentQuestionIndex === exercise.questions.length - 1 ? '完成' : '下一题'}
           </Text>
-          <Icon 
+          <CustomIcon 
             name={currentQuestionIndex === exercise.questions.length - 1 ? "check" : "arrow-forward"} 
             size={20} 
             color={!selectedAnswers[currentQuestionIndex] ? '#CCC' : 'white'} 
@@ -243,7 +243,7 @@ const ListeningPracticeScreen: React.FC<Props> = ({ navigation, route }) => {
               style={styles.closeButton}
               onPress={() => setShowTranscript(false)}
             >
-              <Icon name="close" size={24} color="#666" />
+              <CustomIcon name="close" size={24} color="#666" />
             </TouchableOpacity>
           </View>
           
@@ -259,7 +259,7 @@ const ListeningPracticeScreen: React.FC<Props> = ({ navigation, route }) => {
                 setTimeout(() => playAudio(), 300);
               }}
             >
-              <Icon name="replay" size={20} color="white" />
+              <CustomIcon name="replay" size={20} color="white" />
               <Text style={styles.playAgainButtonText}>重新播放</Text>
             </TouchableOpacity>
           </View>
@@ -281,7 +281,7 @@ const ListeningPracticeScreen: React.FC<Props> = ({ navigation, route }) => {
               colors={score >= 80 ? ['#4CAF50', '#66BB6A'] : score >= 60 ? ['#FF9800', '#FFB74D'] : ['#F44336', '#EF5350']}
               style={styles.resultsHeader}
             >
-              <Icon 
+              <CustomIcon 
                 name={score >= 80 ? "emoji-events" : score >= 60 ? "thumb-up" : "refresh"} 
                 size={48} 
                 color="white" 
@@ -335,7 +335,7 @@ const ListeningPracticeScreen: React.FC<Props> = ({ navigation, route }) => {
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Icon name="arrow-back" size={24} color="white" />
+          <CustomIcon name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
         
         <Text style={styles.headerTitle}>听力练习</Text>
@@ -365,7 +365,7 @@ const ListeningPracticeScreen: React.FC<Props> = ({ navigation, route }) => {
         
         {/* 提示 */}
         <View style={styles.tipsContainer}>
-          <Icon name="lightbulb-outline" size={20} color="#FFA726" />
+          <CustomIcon name="lightbulb-outline" size={20} color="#FFA726" />
           <Text style={styles.tipsText}>
             建议先听2-3遍音频，理解大意后再作答。可以查看原文帮助理解。
           </Text>

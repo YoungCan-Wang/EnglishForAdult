@@ -10,7 +10,7 @@ import {
   TextInput,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import CustomIcon from '../components/CustomIcon';
 import { VocabularyWord } from '../types';
 import { getVocabulary } from '../services/DataService';
 
@@ -103,7 +103,7 @@ const VocabularyScreen: React.FC<Props> = ({ navigation: _navigation }) => {
     return (
       <View style={styles.searchContainer}>
         <View style={styles.searchBar}>
-          <Icon name="search" size={20} color="#666" />
+          <CustomIcon name="search" size={20} color="#666" />
           <TextInput
             style={styles.searchInput}
             placeholder="搜索单词或释义..."
@@ -113,7 +113,7 @@ const VocabularyScreen: React.FC<Props> = ({ navigation: _navigation }) => {
           />
           {searchText ? (
             <TouchableOpacity onPress={() => setSearchText('')}>
-              <Icon name="clear" size={20} color="#666" />
+              <CustomIcon name="clear" size={20} color="#666" />
             </TouchableOpacity>
           ) : null}
         </View>
@@ -153,7 +153,7 @@ const VocabularyScreen: React.FC<Props> = ({ navigation: _navigation }) => {
               <Text style={styles.pronunciationText}>{word.pronunciation}</Text>
             </View>
             <TouchableOpacity style={styles.audioButton} onPress={playAudio}>
-              <Icon name="volume-up" size={24} color="white" />
+              <CustomIcon name="volume-up" size={24} color="white" />
             </TouchableOpacity>
           </View>
           
@@ -214,7 +214,7 @@ const VocabularyScreen: React.FC<Props> = ({ navigation: _navigation }) => {
               style={[styles.quickActionCard, { backgroundColor: action.color }]}
               onPress={action.action}
             >
-              <Icon name={action.icon} size={32} color="white" />
+              <CustomIcon name={action.icon as any} size={32} color="white" />
               <Text style={styles.quickActionTitle}>{action.title}</Text>
               <Text style={styles.quickActionSubtitle}>{action.subtitle}</Text>
             </TouchableOpacity>
@@ -235,7 +235,7 @@ const VocabularyScreen: React.FC<Props> = ({ navigation: _navigation }) => {
       >
         <View style={styles.headerContent}>
           <View style={styles.headerLeft}>
-            <Icon name="book" size={32} color="white" />
+            <CustomIcon name="book" size={32} color="white" />
             <View style={styles.headerText}>
               <Text style={styles.headerTitle}>词汇学习</Text>
               <Text style={styles.headerSubtitle}>扩展你的英语词汇量</Text>

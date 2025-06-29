@@ -8,7 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import CustomIcon from '../components/CustomIcon';
 import { Lesson } from '../types';
 import { getLessons, getUserProgress } from '../services/DataService';
 
@@ -73,7 +73,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           end={{ x: 1, y: 1 }}
         >
           <View style={styles.lessonHeader}>
-            <Icon name={getTypeIcon(lesson.type)} size={24} color="white" />
+            <CustomIcon name={getTypeIcon(lesson.type) as any} size={24} color="white" />
             <View style={styles.lessonBadge}>
               <Text style={styles.lessonLevel}>{lesson.level}</Text>
             </View>
@@ -83,7 +83,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
           <View style={styles.lessonFooter}>
             <Text style={styles.lessonDuration}>{lesson.duration} 分钟</Text>
             {lesson.completed && (
-              <Icon name="check-circle" size={20} color="white" />
+              <CustomIcon name="check-circle" size={20} color="white" />
             )}
           </View>
         </LinearGradient>
@@ -107,7 +107,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
             style={[styles.actionButton, { backgroundColor: action.color }]}
             onPress={() => navigation.navigate(action.screen)}
           >
-            <Icon name={action.icon} size={24} color="white" />
+            <CustomIcon name={action.icon as any} size={24} color="white" />
             <Text style={styles.actionText}>{action.title}</Text>
           </TouchableOpacity>
         ))}
@@ -130,17 +130,17 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
         </View>
         <View style={styles.statsRow}>
           <View style={styles.statItem}>
-            <Icon name="local-fire-department" size={24} color="#FFD700" />
+            <CustomIcon name="local-fire-department" size={24} color="#FFD700" />
             <Text style={styles.statNumber}>{streak}</Text>
             <Text style={styles.statLabel}>连续天数</Text>
           </View>
           <View style={styles.statItem}>
-            <Icon name="star" size={24} color="#FFD700" />
+            <CustomIcon name="star" size={24} color="#FFD700" />
             <Text style={styles.statNumber}>{totalScore}</Text>
             <Text style={styles.statLabel}>总积分</Text>
           </View>
           <View style={styles.statItem}>
-            <Icon name="trending-up" size={24} color="#FFD700" />
+            <CustomIcon name="trending-up" size={24} color="#FFD700" />
             <Text style={styles.statNumber}>{lessons.filter(l => l.completed).length}</Text>
             <Text style={styles.statLabel}>已完成</Text>
           </View>
@@ -163,7 +163,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>今日目标</Text>
         <View style={styles.goalCard}>
-          <Icon name="flag" size={24} color="#007AFF" />
+          <CustomIcon name="flag" size={24} color="#007AFF" />
           <Text style={styles.goalText}>完成 2 个口语练习</Text>
           <Text style={styles.goalProgress}>进度: 1/2</Text>
         </View>
