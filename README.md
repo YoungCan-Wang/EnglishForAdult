@@ -36,9 +36,11 @@
 - **React Navigation** - 导航管理
 
 ### UI组件
-- **react-native-vector-icons** - 图标库
+- **自定义SVG图标系统** - 基于react-native-svg的自定义图标组件
 - **react-native-linear-gradient** - 渐变效果
 - **react-native-safe-area-context** - 安全区域处理
+- **react-native-gesture-handler** - 手势处理
+- **react-native-screens** - 原生屏幕优化
 
 ### 数据存储
 - **AsyncStorage** - 本地数据持久化
@@ -46,7 +48,9 @@
 - **DataService** - 模拟数据服务
 
 ### 音频处理
-- **AudioService** - 音频播放和录音
+- **react-native-sound** - 音频播放功能
+- **@react-native-voice/voice** - 语音识别和录音
+- **AudioService** - 音频播放和录音管理
 - **语音识别** - 发音评估功能
 - **音频格式转换** - 多格式支持
 
@@ -55,6 +59,7 @@
 ```
 src/
 ├── components/          # 可复用组件
+│   └── CustomIcon.tsx   # 自定义SVG图标组件
 ├── navigation/          # 导航配置
 │   └── AppNavigator.tsx # 主导航器
 ├── screens/            # 页面组件
@@ -77,7 +82,16 @@ src/
 
 assets/
 ├── audio/              # 音频文件
-└── images/             # 图片资源
+├── images/             # 图片资源
+└── icons/              # SVG图标文件
+    ├── home-icon.svg
+    ├── mic-icon.svg
+    ├── headset-icon.svg
+    ├── book-icon.svg
+    ├── user-icon.svg
+    ├── play-icon.svg
+    ├── volume-icon.svg
+    └── clear-icon.svg
 ```
 
 ## 安装和运行
@@ -108,12 +122,28 @@ npx react-native run-ios
 
 ### Android运行
 ```bash
+# 方法1: 使用React Native CLI (推荐)
 # 启动Metro服务器
 npx react-native start
 
 # 在新终端运行Android应用
 npx react-native run-android
+
+# 方法2: 使用Gradle直接构建
+cd android
+./gradlew assembleDebug
+
+# 方法3: 清理构建缓存后运行（如遇到问题）
+cd android
+./gradlew clean
+cd ..
+npx react-native run-android
 ```
+
+**注意事项：**
+- 确保Android设备已连接或模拟器已启动
+- 确保已启用USB调试（真机）
+- 如遇到构建问题，可尝试清理缓存：`cd android && ./gradlew clean`
 
 ## 核心功能模块
 
@@ -149,6 +179,9 @@ npx react-native run-android
 - [x] 音频服务架构设计
 - [x] 进度管理系统和数据持久化
 - [x] UI界面设计和渐变效果
+- [x] 自定义SVG图标系统实现
+- [x] Android矢量图标显示问题修复
+- [x] 跨平台图标兼容性优化
 - [x] TypeScript类型错误修复
 - [x] React组件导入问题修复
 - [x] 代码质量检查和编译验证

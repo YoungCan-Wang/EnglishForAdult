@@ -1,4 +1,4 @@
-package com.englishforadult
+package com.youngcan.englishlearning
 
 import android.app.Application
 import com.facebook.react.PackageList

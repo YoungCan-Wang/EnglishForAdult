@@ -1,4 +1,4 @@
-package com.englishforadult
+package com.youngcan.englishlearning
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
