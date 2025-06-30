@@ -9,7 +9,7 @@ import {
   Alert,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import CustomIcon from '../components/CustomIcon';
 import { ListeningExercise } from '../types';
 import { getListeningExercises } from '../services/DataService';
 
@@ -98,7 +98,7 @@ const ListeningScreen: React.FC<Props> = ({ navigation }) => {
           end={{ x: 1, y: 1 }}
         >
           <View style={styles.exerciseHeader}>
-            <Icon name="headset" size={24} color="white" />
+            <CustomIcon name="headset" size={24} color="white" />
             <View style={styles.difficultyBadge}>
               <Text style={styles.difficultyBadgeText}>{exercise.difficulty}</Text>
             </View>
@@ -110,12 +110,12 @@ const ListeningScreen: React.FC<Props> = ({ navigation }) => {
           
           <View style={styles.exerciseFooter}>
             <View style={styles.questionCount}>
-              <Icon name="quiz" size={16} color="rgba(255, 255, 255, 0.8)" />
+              <CustomIcon name="quiz" size={16} color="rgba(255, 255, 255, 0.8)" />
               <Text style={styles.questionCountText}>
                 {exercise.questions.length} 个问题
               </Text>
             </View>
-            <Icon name="play-arrow" size={24} color="white" />
+            <CustomIcon name="play-arrow" size={24} color="white" />
           </View>
         </LinearGradient>
       </TouchableOpacity>
@@ -164,7 +164,7 @@ const ListeningScreen: React.FC<Props> = ({ navigation }) => {
               style={[styles.quickPracticeCard, { backgroundColor: option.color }]}
               onPress={option.action}
             >
-              <Icon name={option.icon} size={32} color="white" />
+              <CustomIcon name={option.icon as any} size={32} color="white" />
               <Text style={styles.quickPracticeTitle}>{option.title}</Text>
               <Text style={styles.quickPracticeSubtitle}>{option.subtitle}</Text>
             </TouchableOpacity>
@@ -185,7 +185,7 @@ const ListeningScreen: React.FC<Props> = ({ navigation }) => {
       >
         <View style={styles.headerContent}>
           <View style={styles.headerLeft}>
-            <Icon name="headset" size={32} color="white" />
+            <CustomIcon name="headset" size={32} color="white" />
             <View style={styles.headerText}>
               <Text style={styles.headerTitle}>听力练习</Text>
               <Text style={styles.headerSubtitle}>提升你的英语听力水平</Text>
@@ -212,7 +212,7 @@ const ListeningScreen: React.FC<Props> = ({ navigation }) => {
 
       {/* 底部提示 */}
       <View style={styles.tipCard}>
-        <Icon name="lightbulb-outline" size={24} color="#4ECDC4" />
+        <CustomIcon name="lightbulb-outline" size={24} color="#4ECDC4" />
         <View style={styles.tipContent}>
           <Text style={styles.tipTitle}>听力小贴士</Text>
           <Text style={styles.tipText}>

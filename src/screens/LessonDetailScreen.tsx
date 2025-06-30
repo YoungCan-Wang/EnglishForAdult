@@ -8,7 +8,7 @@ import {
   Alert,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import CustomIcon from '../components/CustomIcon';
 import { Lesson } from '../types';
 import { markLessonCompleted } from '../services/DataService';
 
@@ -71,7 +71,7 @@ const LessonDetailScreen: React.FC<Props> = ({ navigation, route }) => {
     if (isCompleted) {
       return (
         <View style={styles.completedContainer}>
-          <Icon name="check-circle" size={64} color="#4CAF50" />
+          <CustomIcon name="check-circle" size={64} color="#4CAF50" />
           <Text style={styles.completedTitle}>课程完成！</Text>
           <Text style={styles.completedScore}>得分: {score}</Text>
         </View>
@@ -121,7 +121,7 @@ const LessonDetailScreen: React.FC<Props> = ({ navigation, route }) => {
               }, 2000);
             }}
           >
-            <Icon name="mic" size={32} color="white" />
+            <CustomIcon name="mic" size={32} color="white" />
             <Text style={styles.recordButtonText}>开始录音</Text>
           </TouchableOpacity>
         )}
@@ -153,7 +153,7 @@ const LessonDetailScreen: React.FC<Props> = ({ navigation, route }) => {
           style={styles.backButton}
           onPress={() => navigation.goBack()}
         >
-          <Icon name="arrow-back" size={24} color="white" />
+          <CustomIcon name="arrow-back" size={24} color="white" />
         </TouchableOpacity>
         
         <View style={styles.headerContent}>
@@ -162,11 +162,11 @@ const LessonDetailScreen: React.FC<Props> = ({ navigation, route }) => {
           
           <View style={styles.lessonMeta}>
             <View style={styles.metaItem}>
-              <Icon name="access-time" size={16} color="rgba(255, 255, 255, 0.8)" />
+              <CustomIcon name="access-time" size={16} color="rgba(255, 255, 255, 0.8)" />
               <Text style={styles.metaText}>{lesson.duration} 分钟</Text>
             </View>
             <View style={styles.metaItem}>
-              <Icon name="signal-cellular-alt" size={16} color="rgba(255, 255, 255, 0.8)" />
+              <CustomIcon name="signal-cellular-alt" size={16} color="rgba(255, 255, 255, 0.8)" />
               <Text style={styles.metaText}>{lesson.level}</Text>
             </View>
           </View>

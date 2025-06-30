@@ -2,7 +2,7 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createStackNavigator } from '@react-navigation/stack';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import CustomIcon from '../components/CustomIcon';
 
 // 导入屏幕组件
 import HomeScreen from '../screens/HomeScreen';
@@ -99,7 +99,7 @@ function TabNavigator() {
               iconName = 'help';
           }
 
-          return <Icon name={iconName} size={size} color={color} />;
+          return <CustomIcon name={iconName as 'home' | 'mic' | 'headset' | 'book' | 'person' | 'help'} size={size} color={color} />;
         },
         tabBarActiveTintColor: '#007AFF',
         tabBarInactiveTintColor: 'gray',
