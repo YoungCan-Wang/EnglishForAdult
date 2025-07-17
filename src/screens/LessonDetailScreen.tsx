@@ -10,12 +10,13 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import CustomIcon from '../components/CustomIcon';
 import { Lesson } from '../types';
-import { markLessonCompleted } from '../services/DataService';
+import { DataService } from '../services/DataService';
 
 interface Props {
   navigation: any;
   route: any;
 }
+
 
 const LessonDetailScreen: React.FC<Props> = ({ navigation, route }) => {
   const { lesson }: { lesson: Lesson } = route.params;
@@ -50,7 +51,7 @@ const LessonDetailScreen: React.FC<Props> = ({ navigation, route }) => {
 
   const completeLesson = async () => {
     try {
-      await markLessonCompleted(lesson.id, score);
+      await DataService.markLessonCompleted(lesson.id, score);
       setIsCompleted(true);
       Alert.alert(
         '课程完成！',

@@ -6,11 +6,12 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
+  SafeAreaView,
 } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 import CustomIcon from '../components/CustomIcon';
 import { Lesson } from '../types';
-import { getLessons, getUserProgress } from '../services/DataService';
+import { DataService } from '../services/DataService';
 
 const { width } = Dimensions.get('window');
 
@@ -30,8 +31,8 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
   const loadData = async () => {
     try {
-      const lessonsData = await getLessons();
-      const progressData = await getUserProgress();
+      const lessonsData = await DataService.getLessons();
+      const progressData = await DataService.getUserProgress();
       
       setLessons(lessonsData);
       setStreak(progressData.streakDays || 0);
@@ -39,6 +40,11 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
     } catch (error) {
       console.error('加载数据失败:', error);
     }
+  };
+
+  const handleLessonPress = (lesson: Lesson) => {
+    // 导航到练习详情页面
+    navigation.navigate('ExerciseDetail', { lessonId: lesson.id });
   };
 
   const renderLessonCard = (lesson: Lesson) => {
@@ -64,7 +70,7 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
       <TouchableOpacity
         key={lesson.id}
         style={styles.lessonCard}
-        onPress={() => navigation.navigate('LessonDetail', { lesson })}
+        onPress={() => handleLessonPress(lesson)}
       >
         <LinearGradient
           colors={getTypeColor(lesson.type)}
@@ -116,8 +122,9 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
   };
 
   return (
-    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
-      {/* 用户状态卡片 */}
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        {/* 用户状态卡片 */}
       <LinearGradient
         colors={['#667eea', '#764ba2']}
         style={styles.statusCard}
@@ -169,10 +176,15 @@ const HomeScreen: React.FC<Props> = ({ navigation }) => {
         </View>
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: '#F8F9FA',
+  },
   container: {
     flex: 1,
     backgroundColor: '#F8F9FA',

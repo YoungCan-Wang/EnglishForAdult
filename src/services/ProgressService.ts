@@ -478,7 +478,7 @@ class ProgressService {
         );
         
         // 这里可以触发成就解锁通知
-        console.log('Achievement unlocked:', achievementId);
+        // 成就解锁
       }
     } catch (error) {
       console.error('Failed to unlock achievement:', error);

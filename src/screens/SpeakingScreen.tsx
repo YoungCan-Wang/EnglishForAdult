@@ -11,7 +11,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient';
 import CustomIcon from '../components/CustomIcon';
 import { SpeakingExercise } from '../types';
-import { getSpeakingExercises } from '../services/DataService';
+import { DataService } from '../services/DataService';
 
 const { width } = Dimensions.get('window');
 
@@ -25,7 +25,7 @@ const SpeakingScreen: React.FC<Props> = ({ navigation }) => {
 
   const loadExercises = useCallback(async () => {
     try {
-      const data = await getSpeakingExercises(selectedDifficulty);
+      const data = await DataService.getSpeakingExercises(selectedDifficulty);
       setExercises(data);
     } catch (error) {
       console.error('加载口语练习失败:', error);

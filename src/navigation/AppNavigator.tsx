@@ -10,6 +10,7 @@ import SpeakingScreen from '../screens/SpeakingScreen';
 import ListeningScreen from '../screens/ListeningScreen';
 import VocabularyScreen from '../screens/VocabularyScreen';
 import ProfileScreen from '../screens/ProfileScreen';
+import ExerciseDetailScreen from '../screens/ExerciseDetailScreen';
 import LessonDetailScreen from '../screens/LessonDetailScreen';
 import PronunciationPracticeScreen from '../screens/PronunciationPracticeScreen';
 import ListeningPracticeScreen from '../screens/ListeningPracticeScreen';
@@ -31,6 +32,11 @@ function HomeStack() {
         component={LessonDetailScreen} 
         options={{ title: '课程详情' }}
       />
+      <Stack.Screen 
+         name="ExerciseDetail" 
+         component={ExerciseDetailScreen as any} 
+         options={{ title: '练习详情' }}
+       />
     </Stack.Navigator>
   );
 }
@@ -49,6 +55,11 @@ function SpeakingStack() {
         component={PronunciationPracticeScreen} 
         options={{ title: '发音练习' }}
       />
+      <Stack.Screen 
+         name="ExerciseDetail" 
+         component={ExerciseDetailScreen as any} 
+         options={{ title: '练习详情' }}
+       />
     </Stack.Navigator>
   );
 }
@@ -67,6 +78,11 @@ function ListeningStack() {
         component={ListeningPracticeScreen} 
         options={{ title: '听力训练' }}
       />
+      <Stack.Screen 
+         name="ExerciseDetail" 
+         component={ExerciseDetailScreen as any} 
+         options={{ title: '练习详情' }}
+       />
     </Stack.Navigator>
   );
 }

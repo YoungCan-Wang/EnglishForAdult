@@ -1,36 +1,125 @@
 import { Alert } from 'react-native';
+import Sound from 'react-native-sound';
+import Voice from '@react-native-voice/voice';
+
+// 初始化Sound库
+Sound.setCategory('Playback');
 
 // 音频播放状态
-export interface AudioState {
+interface AudioState {
   isPlaying: boolean;
+  isLoaded: boolean;
   duration: number;
   currentTime: number;
-  isLoaded: boolean;
+  volume: number;
 }
 
 // 录音状态
-export interface RecordingState {
+interface RecordingState {
   isRecording: boolean;
   duration: number;
-  audioPath?: string;
+  audioPath?: string | null;
+}
+
+// 音频播放接口
+export interface AudioPlayer {
+  load(url: string): Promise<void>;
+  play(): Promise<void>;
+  pause(): void;
+  stop(): void;
+  setVolume(volume: number): void;
+  getDuration(): number;
+  getCurrentTime(): number;
+  release(): void;
+}
+
+// 录音接口
+export interface AudioRecorder {
+  start(): Promise<void>;
+  stop(): Promise<string>;
+  cancel(): void;
+  isRecording(): boolean;
+}
+
+// 语音识别接口
+export interface SpeechRecognition {
+  start(): Promise<void>;
+  stop(): Promise<string[]>;
+  cancel(): void;
+  isListening(): boolean;
 }
 
 class AudioService {
   private static instance: AudioService;
-  private currentAudio: any = null;
+  private currentAudio: Sound | null = null;
   private recorder: any = null;
   private audioState: AudioState = {
     isPlaying: false,
+    isLoaded: false,
     duration: 0,
     currentTime: 0,
-    isLoaded: false,
+    volume: 1.0,
   };
+
   private recordingState: RecordingState = {
     isRecording: false,
     duration: 0,
+    audioPath: null,
   };
-  private listeners: Array<(state: AudioState) => void> = [];
-  private recordingListeners: Array<(state: RecordingState) => void> = [];
+
+  private listeners: ((state: AudioState) => void)[] = [];
+  private recordingListeners: ((state: RecordingState) => void)[] = [];
+  private speechResults: string[] = [];
+  private speechResultListeners: ((results: string[]) => void)[] = [];
+
+  constructor() {
+    this.initializeVoice();
+  }
+
+  private initializeVoice(): void {
+    Voice.onSpeechStart = this.onSpeechStart;
+    Voice.onSpeechRecognized = this.onSpeechRecognized;
+    Voice.onSpeechEnd = this.onSpeechEnd;
+    Voice.onSpeechError = this.onSpeechError;
+    Voice.onSpeechResults = this.onSpeechResultsHandler;
+    Voice.onSpeechPartialResults = this.onSpeechPartialResults;
+    Voice.onSpeechVolumeChanged = this.onSpeechVolumeChanged;
+  }
+
+  private onSpeechStart = (e: any) => {
+    // 语音识别开始
+  };
+
+  private onSpeechRecognized = (e: any) => {
+    // 语音识别成功
+  };
+
+  private onSpeechEnd = (e: any) => {
+    // 语音识别结束
+    this.recordingState.isRecording = false;
+    this.notifyRecordingListeners();
+  };
+
+  private onSpeechError = (e: any) => {
+    // 语音识别错误
+    this.recordingState.isRecording = false;
+    this.notifyRecordingListeners();
+    Alert.alert('语音识别错误', e.error?.message || '未知错误');
+  };
+
+  private onSpeechResultsHandler = (e: any) => {
+    // 语音识别结果
+    this.speechResults = e.value || [];
+    this.notifySpeechResultListeners();
+  };
+
+  private onSpeechPartialResults = (e: any) => {
+    // 语音识别部分结果
+  };
+
+  private onSpeechVolumeChanged = (e: any) => {
+    // 语音音量变化
+  };
 
   public static getInstance(): AudioService {
     if (!AudioService.instance) {
@@ -42,19 +131,35 @@ class AudioService {
   // 音频播放相关方法
   public async loadAudio(audioPath: string): Promise<boolean> {
     try {
-      // 这里应该使用 react-native-sound 或其他音频库
-      // 目前使用模拟实现
-      console.log('Loading audio:', audioPath);
-      
-      this.audioState = {
-        ...this.audioState,
-        isLoaded: true,
-        duration: 30, // 模拟30秒音频
-        currentTime: 0,
-      };
-      
-      this.notifyAudioListeners();
-      return true;
+      // 释放之前的音频资源
+      if (this.currentAudio) {
+        this.currentAudio.release();
+        this.currentAudio = null;
+      }
+
+      return new Promise((resolve) => {
+        // 创建新的Sound实例
+        this.currentAudio = new Sound(audioPath, Sound.MAIN_BUNDLE, (error) => {
+          if (error) {
+            // 音频加载失败
+            Alert.alert('错误', '音频加载失败');
+            resolve(false);
+            return;
+          }
+          
+          const duration = this.currentAudio?.getDuration() || 0;
+          this.audioState = {
+            ...this.audioState,
+            isLoaded: true,
+            duration: duration,
+            currentTime: 0,
+          };
+          
+          // 音频加载成功
+          this.notifyAudioListeners();
+          resolve(true);
+        });
+      });
     } catch (error) {
       console.error('Failed to load audio:', error);
       Alert.alert('错误', '音频加载失败');
@@ -64,31 +169,40 @@ class AudioService {
 
   public async playAudio(): Promise<boolean> {
     try {
-      if (!this.audioState.isLoaded) {
+      if (!this.audioState.isLoaded || !this.currentAudio) {
         Alert.alert('提示', '请先加载音频文件');
         return false;
       }
 
-      // 模拟播放
-      this.audioState.isPlaying = true;
-      this.notifyAudioListeners();
-      
-      // 模拟播放进度
-      const playInterval = setInterval(() => {
-        if (this.audioState.isPlaying) {
-          this.audioState.currentTime += 1;
-          if (this.audioState.currentTime >= this.audioState.duration) {
-            this.audioState.isPlaying = false;
+      return new Promise((resolve) => {
+        this.audioState.isPlaying = true;
+        this.notifyAudioListeners();
+        
+        // 使用react-native-sound播放音频
+        this.currentAudio!.play((success) => {
+          this.audioState.isPlaying = false;
+          if (success) {
+            // 音频播放完成
             this.audioState.currentTime = this.audioState.duration;
-            clearInterval(playInterval);
+          } else {
+            // 音频播放失败
+            Alert.alert('错误', '音频播放失败');
           }
           this.notifyAudioListeners();
-        } else {
-          clearInterval(playInterval);
-        }
-      }, 1000);
-
-      return true;
+          resolve(success);
+        });
+        
+        // 更新播放进度
+        const progressInterval = setInterval(() => {
+          if (this.audioState.isPlaying && this.currentAudio) {
+            const currentTime = this.currentAudio.getCurrentTime();
+            this.audioState.currentTime = currentTime !== undefined ? currentTime : 0;
+            this.notifyAudioListeners();
+          } else {
+            clearInterval(progressInterval);
+          }
+        }, 100);
+      });
     } catch (error) {
       console.error('Failed to play audio:', error);
       Alert.alert('错误', '音频播放失败');
@@ -97,34 +211,51 @@ class AudioService {
   }
 
   public pauseAudio(): void {
-    this.audioState.isPlaying = false;
-    this.notifyAudioListeners();
+    if (this.currentAudio) {
+      this.currentAudio.pause();
+      this.audioState.isPlaying = false;
+      // 音频已暂停
+      this.notifyAudioListeners();
+    }
   }
 
   public stopAudio(): void {
-    this.audioState.isPlaying = false;
-    this.audioState.currentTime = 0;
-    this.notifyAudioListeners();
+    if (this.currentAudio) {
+      this.currentAudio.stop();
+      this.audioState.isPlaying = false;
+      this.audioState.currentTime = 0;
+      // 音频已停止
+      this.notifyAudioListeners();
+    }
   }
 
   public seekTo(time: number): void {
-    if (time >= 0 && time <= this.audioState.duration) {
+    if (this.currentAudio && time >= 0 && time <= this.audioState.duration) {
+      this.currentAudio.setCurrentTime(time);
       this.audioState.currentTime = time;
       this.notifyAudioListeners();
     }
   }
 
   public setPlaybackSpeed(speed: number): void {
-    // 实现播放速度控制
-    console.log('Setting playback speed to:', speed);
+    if (this.currentAudio) {
+      this.currentAudio.setSpeed(speed);
+      // 播放速度设置
+    }
+  }
+
+  public setVolume(volume: number): void {
+    if (this.currentAudio) {
+      this.currentAudio.setVolume(Math.max(0, Math.min(1, volume)));
+      // 音量设置
+    }
   }
 
   // 录音相关方法
   public async startRecording(): Promise<boolean> {
     try {
-      // 这里应该使用 @react-native-voice/voice 或其他录音库
-      // 目前使用模拟实现
-      console.log('Starting recording...');
+      // 使用react-native-voice进行语音识别
+      await Voice.start('en-US');
       
       this.recordingState = {
         isRecording: true,
@@ -134,16 +265,7 @@ class AudioService {
       
       this.notifyRecordingListeners();
       
-      // 模拟录音计时
-      const recordInterval = setInterval(() => {
-        if (this.recordingState.isRecording) {
-          this.recordingState.duration += 1;
-          this.notifyRecordingListeners();
-        } else {
-          clearInterval(recordInterval);
-        }
-      }, 1000);
-
+      // 开始录音和语音识别
       return true;
     } catch (error) {
       console.error('Failed to start recording:', error);
@@ -154,16 +276,13 @@ class AudioService {
 
   public async stopRecording(): Promise<string | null> {
     try {
+      await Voice.stop();
+      
       this.recordingState.isRecording = false;
-      
-      // 模拟生成录音文件路径
-      const audioPath = `recording_${Date.now()}.m4a`;
-      this.recordingState.audioPath = audioPath;
-      
       this.notifyRecordingListeners();
       
-      console.log('Recording stopped, saved to:', audioPath);
-      return audioPath;
+      // 录音已停止
+      return 'recording_completed';
     } catch (error) {
       console.error('Failed to stop recording:', error);
       Alert.alert('错误', '录音停止失败');
@@ -172,18 +291,20 @@ class AudioService {
   }
 
   public cancelRecording(): void {
+    Voice.cancel();
     this.recordingState = {
       isRecording: false,
       duration: 0,
     };
     this.notifyRecordingListeners();
+    // 录音已取消
   }
 
   // 语音识别相关方法
   public async startSpeechRecognition(language: string = 'en-US'): Promise<boolean> {
     try {
       // 这里应该使用 @react-native-voice/voice
-      console.log('Starting speech recognition for language:', language);
+      // 开始语音识别
       
       // 模拟语音识别
       setTimeout(() => {
@@ -199,11 +320,11 @@ class AudioService {
   }
 
   public stopSpeechRecognition(): void {
-    console.log('Stopping speech recognition...');
+    // 停止语音识别
   }
 
   private onSpeechResults(results: string[]): void {
-    console.log('Speech recognition results:', results);
+    // 语音识别结果处理
     // 这里可以添加回调来处理识别结果
   }
 
@@ -218,7 +339,7 @@ class AudioService {
   }> {
     try {
       // 模拟发音评估
-      console.log('Evaluating pronunciation for:', targetText);
+      // 发音评估
       
       // 模拟评估结果
       const words = targetText.split(' ');
@@ -259,7 +380,7 @@ class AudioService {
     try {
       // 模拟格式转换
       const outputPath = inputPath.replace(/\.[^/.]+$/, `.${outputFormat}`);
-      console.log(`Converting ${inputPath} to ${outputPath}`);
+      // 音频格式转换
       
       // 实际实现中应该使用音频处理库
       return outputPath;
@@ -273,7 +394,7 @@ class AudioService {
   public async deleteAudioFile(filePath: string): Promise<boolean> {
     try {
       // 实际实现中应该删除文件系统中的文件
-      console.log('Deleting audio file:', filePath);
+      // 删除音频文件
       return true;
     } catch (error) {
       console.error('Failed to delete audio file:', error);
@@ -322,6 +443,29 @@ class AudioService {
     this.recordingListeners.forEach(listener => listener(this.recordingState));
   }
 
+  private notifySpeechResultListeners(): void {
+    this.speechResultListeners.forEach(listener => listener(this.speechResults));
+  }
+
+  // 语音识别监听器管理
+  public addSpeechResultListener(listener: (results: string[]) => void): void {
+    this.speechResultListeners.push(listener);
+  }
+
+  public removeSpeechResultListener(listener: (results: string[]) => void): void {
+    this.speechResultListeners = this.speechResultListeners.filter(l => l !== listener);
+  }
+
+  // 获取最新的语音识别结果
+  public getLatestSpeechResult(): string | null {
+    return this.speechResults.length > 0 ? this.speechResults[0] : null;
+  }
+
+  // 获取所有语音识别结果
+  public getAllSpeechResults(): string[] {
+    return [...this.speechResults];
+  }
+
   // 获取当前状态
   public getAudioState(): AudioState {
     return { ...this.audioState };
@@ -334,9 +478,20 @@ class AudioService {
   // 清理资源
   public cleanup(): void {
     this.stopAudio();
+    if (this.currentAudio) {
+      this.currentAudio.release();
+      this.currentAudio = null;
+    }
     this.cancelRecording();
+    
+    // 清理语音识别
+    Voice.destroy().then(Voice.removeAllListeners);
+    
+    // 清理所有监听器
     this.listeners = [];
     this.recordingListeners = [];
+    this.speechResultListeners = [];
+    this.speechResults = [];
   }
 }
 

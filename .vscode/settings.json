@@ -1,4 +1,13 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
-    "java.configuration.updateBuildConfiguration": "interactive"
+    "java.configuration.updateBuildConfiguration": "interactive",
+    "kiroAgent.trustedCommands": [
+        "`npm *`",
+        "`adb *`",
+        "`cd *`",
+        "`mkdir *`",
+        "`mv *`",
+        "`git *`",
+        "git *"
+    ]
 }
